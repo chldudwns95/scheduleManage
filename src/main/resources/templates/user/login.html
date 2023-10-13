@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+</head>
+<body>
+<div class = "loginContainer">
+    <form method="post" action ="/login">
+        <div>
+            <label>ID</label>
+            <input type = "text" name = "loginId"/>
+        </div>
+        <div>
+            <label>PW</label>
+            <input type = "password" name = "password"/>
+        </div>
+        <div>
+            <button>로그인</button>
+        </div>
+    </form>
+    <div>
+        <a href = "/register">회원가입</a>
+    </div>
+</div>
+
+</body>
+</html>
