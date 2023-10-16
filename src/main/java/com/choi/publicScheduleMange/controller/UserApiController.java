@@ -21,8 +21,9 @@ public class UserApiController {
     @PostMapping("/register")
     public void register(UserMgt user, HttpServletResponse response) throws IOException {
         userService.register(user);
-        String redirectUri = "http://localhost:9090/login";
-
+//        String redirectUri = "http://localhost:9090/login";
+//        String redirectUri = "https://port-0-schedulemanage-jvpb2alns7szyd.sel5.cloudtype.app/login";
+        String redirectUri = "/login";
         response.sendRedirect(redirectUri);
     }
 /*
