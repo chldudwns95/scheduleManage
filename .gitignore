@@ -1,5 +1,3 @@
-
-
 HELP.md
 .gradle
 build/
@@ -37,8 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-.gradle/
-
-gradle-wrapper.jar
-gradle-wrapper.properties
