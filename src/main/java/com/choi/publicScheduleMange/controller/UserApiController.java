@@ -1,11 +1,8 @@
 package com.choi.publicScheduleMange.controller;
 
-import com.choi.publicScheduleMange.model.UserDetail;
 import com.choi.publicScheduleMange.model.UserMgt;
 import com.choi.publicScheduleMange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
