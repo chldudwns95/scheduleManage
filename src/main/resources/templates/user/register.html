@@ -5,44 +5,103 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link href="/css/user/user.css" rel="stylesheet"/>
+    <link href="/css/button.css" rel="stylesheet"/>
 </head>
 <body>
 <div class = "registerContainer">
     <!--<form action = "/api/user" method="post">-->
     <form action = "/register" method="post">
-        <div>
-            <label>ID</label>
-            <input type ="text" name = "loginId"/>
+        <h2>회원가입</h2>
+        <div class="divGap">
+            <label for="loginId">ID</label>
+            <input type ="text" name = "loginId" id="loginId"/>
         </div>
-        <div>
-            <label>PW</label>
-            <input type = "password" name = "password"/>
+        <div class="divGap">
+            <label for="password">PW</label>
+            <input type = "password" name = "password" id="password"/>
         </div>
-        <div>
-            <label>이름</label>
-            <input type = "text" name = "memberName"/>
+        <div class="divGap">
+            <label for="memberName">이름</label>
+            <input type = "text" name = "memberName" id="memberName"/>
         </div>
-        <div>
-            <label>연락처</label>
-            <input type = "text" name = "memberPhone" placeholder="010-1234-1234"/>
+        <div class="divGap">
+            <label for="memberPhone">연락처</label>
+            <input type = "text" name = "memberPhone" placeholder="010-1234-1234" id="memberPhone"/>
         </div>
-        <div>
-            <label>이메일</label>
-            <input type = "text" name = "memberEmail"/>
+        <div class="divGap">
+            <label for="memberEmail">이메일</label>
+            <input type = "text" name = "memberEmail" id="memberEmail"/>
         </div>
-        <div>
-            <label>회사명</label>
-            <input type = "text" name = "memberCompany"/>
-        </div>
-
-        <div>
-            <label>부서명</label>
-            <select name = "deptNo">
-                <option value="123">asdasd</option>
+<!--        <div class="divGap">-->
+            <!--<label for="memberCompany">회사명</label>-->
+            <input type = "text" name = "memberCompany" value ="test" hidden/>
+<!--        </div>-->
+        <div class="divGap">
+            <label for="deptNo">회사명</label>
+            <select name = "deptNo" id="deptNo">
+                <option value="테스트회사명">테스트회사명</option>
             </select>
         </div>
-        <input type="submit" value = "회원가입">
+        <div class="buttonContainer divGap">
+            <button type ="button" class = "w-btn w-btn-blue" id ="regitBtn">회원가입</button>
+            <button type="button" class = "w-btn w-btn-red" id ="cancelBtn">취소</button>
+        </div>
     </form>
 </div>
 </body>
+    <script>
+
+        let loginId = document.getElementById('loginId');
+        let loginPw = document.getElementById('password');
+        let memberName = document.getElementById('memberName')
+        let memberPhone = document.getElementById('memberPhone');
+        let memberEmail = document.getElementById('memberEmail')
+        let deptNo = document.getElementById('deptNo');
+
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+           window.location.href ="/login";
+        });
+
+        document.getElementById('regitBtn').addEventListener('click', () => {
+            if(!loginId.value) {
+                alert("ID를 입력해주세요.")
+                loginId.focus();
+                return false;
+            }
+            if(!loginPw.value) {
+                alert("비밀번호를 입력해주세요.")
+                loginPw.focus();
+                return false;
+            }
+            if(!memberName.value) {
+                alert("이름을 입력해주세요.")
+                memberName.focus();
+                return false;
+            }
+            if(!memberPhone.value) {
+                alert("연락처를 입력해주세요.")
+                memberPhone.focus();
+                return false;
+            }
+            if(!memberEmail.value) {
+                alert("이메일을 입력해주세요.")
+                memberEmail.focus();
+                return false;
+            }
+            if(!deptNo.value) {
+                alert("회사명을 입력해주세요.")
+                deptNo.focus();
+                return false;
+            }
+
+            document.querySelector('.registerContainer form').submit();
+            //Id중복체크
+        })
+
+
+
+
+    </script>
 </html>

@@ -5,26 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link href="/css/user/user.css" rel="stylesheet"/>
+    <link href="/css/button.css" rel="stylesheet"/>
 </head>
+<style>
+
+</style>
 <body>
 <div class = "loginContainer">
-    <form method="post" action ="/login">
-        <div>
-            <label>ID</label>
-            <input type = "text" name = "loginId"/>
+    <form method="post" action ="/login" id="login">
+    <h2>Login</h2>
+        <div class = "divGap">
+            <label for="loginId">ID</label>
+            <input type = "text" name = "loginId" id = "loginId"/>
         </div>
-        <div>
-            <label>PW</label>
-            <input type = "password" name = "password"/>
+        <div class = "divGap">
+            <label for="password">PW</label>
+            <input type = "password" name = "password" id ="password"/>
         </div>
-        <div>
-            <button>로그인</button>
+        <div class = "buttonContainer divGap">
+            <button type = "button" id = "loginBtn" class = "w-btn w-btn-indigo">로그인</button>
+            <button type = "button" id = "registerBtn" class ="w-btn w-btn-blue">회원가입</button>
         </div>
+            <!--<a href = "/register">회원가입</a>-->
     </form>
-    <div>
-        <a href = "/register">회원가입</a>
-    </div>
 </div>
 
 </body>
+<script>
+    let loginId = document.getElementById('loginId');
+    let loginPw = document.getElementById('password');
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        if(!loginId.value) {
+            alert("ID를 입력해주세요.")
+            loginId.focus();
+            return false;
+        }
+
+        if(!loginPw.value) {
+            alert("비밀번호를 입력해주세요")
+            loginPw.focus();
+            return false;
+        }
+
+        document.getElementById('login').submit();
+    });
+
+    document.getElementById('registerBtn').addEventListener('click', () => {
+       window.location.href="/register";
+    });
+</script>
 </html>

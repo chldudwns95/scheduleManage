@@ -23,6 +23,7 @@ public class UserApiController {
         String redirectUri = "/login";
         response.sendRedirect(redirectUri);
     }
+
 /*
     @PostMapping("/login")
     public void login(Model model, Authentication auth, HttpServletResponse response) throws IOException {
