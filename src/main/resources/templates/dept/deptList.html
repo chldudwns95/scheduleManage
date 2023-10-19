@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>schdule</title>
+    <!-- fullcalendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+</head>
+<body>
+<div class ="menuContainer">
+    <a class ="logo" th:href="@{/}">,쉼표</a>
+    <div class ="menuContent">
+        <a th:href="@{/}">달력보기</a>
+        <a th:href="@{/dept}">부서보기</a>
+        <a th:href="@{/logout}">로그아웃</a>
+        <div class ="clientWrap">
+            <p th:text="${#authentication.name}"/>
+            <p>님 환영합니다</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

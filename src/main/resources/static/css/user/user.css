@@ -1,13 +1,14 @@
+@import "../reset.css";
+
 @font-face {
-    font-family: 'TAEBAEKmilkyway';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/TAEBAEKmilkyway.woff2') format('woff2');
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
-
 body {
     background: rgba(0, 0, 0, 0.1);
-    font-family: 'TAEBAEKmilkyway';
+    font-family: 'GangwonEdu_OTFBoldA';
     font-size: 1rem;
     font-weight: 700;
 }
@@ -59,7 +60,7 @@ h2 {
     height: 50px;
     border-radius: 30px;
     margin-top: 10px;
-    padding: 0px 20px;
+    padding: 0 20px;
     border: 1px solid lightgray;
     outline: none;
 }
@@ -102,7 +103,7 @@ button {
     height: 40px;
     border-radius: 30px;
     margin-top: 10px;
-    padding: 0px 20px;
+    padding: 0 20px;
     border: 1px solid lightgray;
     outline: none;
 }
@@ -111,7 +112,7 @@ button {
     width: 105%;
     height: 40px;
     border-radius: 30px;
-    padding: 0px 20px;
+    padding: 0 20px;
     margin-top: 10px;
 
     /*padding: 0px 20px;*/

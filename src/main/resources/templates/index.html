@@ -5,24 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>schdule</title>
-<!--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>-->
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- bootstrap 4 -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     <!-- fullcalendar -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 </head>
     <body>
-        <div id="calendar" style="width: 70%; padding:2rem; height: 70%;"></div>
-
-        <!-- modal 추가 -->
+        <div class ="menuContainer">
+            <a class ="logo" th:href="@{/}">,쉼표</a>
+            <div class ="menuContent">
+                <a th:href="@{/}">달력보기</a>
+                <a th:href="@{/dept}">부서보기</a>
+                <a th:href="@{/logout}">로그아웃</a>
+                <div class ="clientWrap">
+                    <p th:text="${#authentication.name}"/>
+                    <p>님 환영합니다</p>
+                </div>
+            </div>
+        </div>
+        <div id="calendar"></div>
+<!--
+        &lt;!&ndash; modal 추가 &ndash;&gt;
         <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -35,12 +38,23 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="taskId" class="col-form-label">일정 내용</label>
-                            <input type="text" class="form-control" id="calendar_content" name="calendar_content">
-                            <label for="taskId" class="col-form-label">시작 날짜</label>
-                            <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date">
-                            <label for="taskId" class="col-form-label">종료 날짜</label>
-                            <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date">
+                            <label for="todoContent" class="col-form-label">일정 내용</label>
+                            <input type="text" class="form-control" id="todoContent" name="todoContent">
+                            <label for="todoInsDate" class="col-form-label">시작 날짜</label>
+                            <input type="date" class="form-control" id="todoInsDate" name="todoInsDate">
+                            <label for="todoEndDate" class="col-form-label">종료 날짜</label>
+                            <input type="date" class="form-control" id="todoEndDate" name="todoEndDate">
+                            <label for="feedContent" class="col-form-label">피드백</label>
+                            <textarea class="form-control" id="feedContent" name="feedContent"/>
+
+                        &lt;!&ndash;    <label for="feedContent" class="col-form-label">피드백</label>
+                            <input type="date" class="form-control" id="feedId" name="feedId" hidden>
+                            <textarea id="feedContent" name="feedContent"/>
+                            <label for="todoCompleteYn">진행상태</label>
+                            <select id="todoCompleteYn">
+                                <option value ="go" selected>진행</option>
+                                <option value ="end">완료</option>
+                            </select>&ndash;&gt;
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -51,9 +65,9 @@
 
                 </div>
             </div>
-        </div>
+        </div>-->
 
-        <div><button id ="createButton">등록</button></div>
+        <div class ="buttonContainer"><button id ="createButton">+</button></div>
     </body>
 <script>
 
@@ -77,6 +91,8 @@
                     title:'디비가져온거',
                     start: '2023-10-19',
                     end: '2023-10-20',
+                    feedContent: 'feedContent',
+                    todoCompleteYn: 'Y',
                 }
             ],
             eventClick: function (arg) {
@@ -100,11 +116,11 @@
     const modalOpen = () => {
         $("#calendarModal").modal("show");
         $("#addCalendar").on("click", function () {
-            let content = $("#calendar_content").val();
-            let startDate = $("#calendar_start_date").val();
-            let endDate = $("#calendar_end_date").val();
+            let todoContent = $("#todoContent").val();
+            let todoInsDate = $("#todoInsDate").val();
+            let todoEndDate = $("#todoEndDate").val();
 
-            console.log(new Date(startDate));
+/*            console.log(new Date(startDate));
             console.log(new Date(endDate));
             //내용 입력 여부 확인
             if (content == null || content == "") {
@@ -113,14 +129,14 @@
                 alert("날짜를 입력하세요.");
             } else if (new Date(startDate) - new Date(endDate) < 0) { // date 타입으로 변경 후 확인
                 alert("종료일이 시작일보다 먼저입니다.");
-            } else { // 정상적인 입력 시*/
+            } else { // 정상적인 입력 시*!/
                 let obj = {
                     "title": content,
                     "start": startDate,
                     "end": endDate
                 }//전송할 객체 생성
                 console.log(obj);
-            }
+            }*/
         })
      }
 </script>
