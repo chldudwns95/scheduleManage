@@ -5,99 +5,136 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>schdule</title>
-    <!--<link rel = "stylesheet" href = "/css/index.css"/>-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<!--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>-->
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- bootstrap 4 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- fullcalendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
 </head>
-<body style="padding :3rem;">
-<p th:text="${#authentication.name}"/>
-<p>님 환영합니다</p>
-<div class = "menuContainer">
-    <a href="/logout">로그아웃</a>
-</div>
+    <body>
+        <div id="calendar" style="width: 70%; padding:2rem; height: 70%;"></div>
 
-<div class = "mainContainer">
-    <header>
-        <div class ="headerLeft">
-            <button class="prev">
-                이전
-            </button>
-            <button class="today">Today</button>
-            <button class="next">
-                다음
-            </button>
-        </div>
-        <div class ="headerCenter">
-            <span class="now"></span>
+        <!-- modal 추가 -->
+        <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="taskId" class="col-form-label">일정 내용</label>
+                            <input type="text" class="form-control" id="calendar_content" name="calendar_content">
+                            <label for="taskId" class="col-form-label">시작 날짜</label>
+                            <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date">
+                            <label for="taskId" class="col-form-label">종료 날짜</label>
+                            <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="addCalendar">추가</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="sprintSettingModalClose">취소</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
-        <div class = "headerRight">
-            <span class ="month">Month</span>
-            <span class = "week">week</span>
-            <span class = "day">day</span>
-        </div>
-    </header>
-    <main>
-        <div id="calendar" style="height: 900px;"></div>
-    </main>
-</div>
-</body>
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-
+        <div><button id ="createButton">등록</button></div>
+    </body>
 <script>
 
-    const Calendar = tui.Calendar;
-    let now = document.querySelector('.now');
+    document.addEventListener('DOMContentLoaded', () => {
+        // 데이터 조회 ajax
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left : 'prev today next',
+                center : 'title',
+                right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            locale: 'ko',
+            editable: true,
+            droppable: true,
+            selectable: true,
+            selectMirror: true,
+            events: [
+                {
+                    title:'디비가져온거',
+                    start: '2023-10-19',
+                    end: '2023-10-20',
+                }
+            ],
+            eventClick: function (arg) {
+                console.log(arg);
+                modalOpen();
+            }
+        });
 
-    const setCalendar = new Calendar('#calendar', {
-        defaultView : 'month',
-        useCreationPopup : true,
-        useDetailPopup : true,
-        // useFormPopup : true,
+        // 날짜클릭시
+        calendar.on('dateClick', () => {
+            // modalOpen();
+        });
 
+        calendar.render();
     });
 
-    window.addEventListener('load', () => setNowDate());
-    document.querySelector('.month').addEventListener('click', () => setCalendar.changeView('month'));
-    document.querySelector('.week').addEventListener('click', () => setCalendar.changeView('week'));
-    document.querySelector('.day').addEventListener('click', () => setCalendar.changeView('day'));
-
-    document.querySelector('.prev').addEventListener('click', () => {
-        setCalendar.prev();
-        setNowDate();
+    document.getElementById('createButton').addEventListener('click', () => {
+        modalOpen();
     });
 
-    document.querySelector('.next').addEventListener('click', () => {
-        setCalendar.next();
-        setNowDate();
-    });
+    const modalOpen = () => {
+        $("#calendarModal").modal("show");
+        $("#addCalendar").on("click", function () {
+            let content = $("#calendar_content").val();
+            let startDate = $("#calendar_start_date").val();
+            let endDate = $("#calendar_end_date").val();
 
-    document.querySelector('.today').addEventListener('click', () => {
-        setCalendar.today();
-        setNowDate();
-    });
-
-    function setNowDate() {
-        let nowDate = new Date(setCalendar.getDate());
-        const year = nowDate.getFullYear();
-        const month = (1 + nowDate.getMonth());
-
-        now.textContent=year+'.'+month;
-    }
-
-    const calendar = new Calendar(setCalendar);
-
-    //     https://github.com/nhn/tui.calendar/blob/main/docs/ko/guide/getting-started.md#contents-delivery-network-cdn-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0*/
-    //     https://nhn.github.io/tui.calendar/latest/tutorial-01-monthly-view-basic
-    //     https://ui.toast.com/tui-calendar
-    //     https://kimeck.tistory.com/17
-    /*https://nowonbun.tistory.com/368
-    https://jjunn93.com/entry/%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-FullCalendar-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
-    https://m.blog.naver.com/ioi___s_s/221494415471*/
-
-    /*
-   * session 관련
-   * https://dev-gorany.tistory.com/139
-   * */
+            console.log(new Date(startDate));
+            console.log(new Date(endDate));
+            //내용 입력 여부 확인
+            if (content == null || content == "") {
+                alert("내용을 입력하세요.");
+            } else if (startDate == "" || endDate == "") {
+                alert("날짜를 입력하세요.");
+            } else if (new Date(startDate) - new Date(endDate) < 0) { // date 타입으로 변경 후 확인
+                alert("종료일이 시작일보다 먼저입니다.");
+            } else { // 정상적인 입력 시*/
+                let obj = {
+                    "title": content,
+                    "start": startDate,
+                    "end": endDate
+                }//전송할 객체 생성
+                console.log(obj);
+            }
+        })
+     }
 </script>
 </html>
+
+<!--
+    https://fullcalendar.io/docs/dynamic-options
+    https://dodokong.tistory.com/41
+    https://dodokong.tistory.com/45
+    https://blog.naver.com/PostView.naver?blogId=iiwvii&logNo=222368096146&parentCategoryNo=&categoryNo=1&viewDate=&isShowPopularPosts=true&from=search
+
+    팝업(모달)만들기
+    https://shin1303.tistory.com/entry/Vanilla-JS-Modal-%EC%B0%BD-%EB%A7%8C%EB%93%A4%EA%B8%B0
+    1. 모달에 피드백추가
+    2. 관리자(회사등록)
+    3. db연동후 저장
+ -->
