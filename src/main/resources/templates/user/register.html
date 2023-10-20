@@ -11,7 +11,6 @@
 </head>
 <body>
 <div class = "registerContainer">
-    <!--<form action = "/api/user" method="post">-->
     <form action = "/register" method="post">
         <h2>회원가입</h2>
         <div class="divGap">
@@ -39,8 +38,8 @@
             <input type = "text" name = "memberCompany" value ="test" hidden/>
 <!--        </div>-->
         <div class="divGap">
-            <label for="deptNo">회사명</label>
-            <select name = "deptNo" id="deptNo">
+            <label for="companyId">회사명</label>
+            <select name = "companyId" id="companyId">
                 <option value="테스트회사명">테스트회사명</option>
             </select>
         </div>
@@ -58,7 +57,7 @@
         let memberName = document.getElementById('memberName')
         let memberPhone = document.getElementById('memberPhone');
         let memberEmail = document.getElementById('memberEmail')
-        let deptNo = document.getElementById('deptNo');
+        let deptNo = document.getElementById('companyId');
 
         document.getElementById('cancelBtn').addEventListener('click', () => {
            window.location.href ="/login";

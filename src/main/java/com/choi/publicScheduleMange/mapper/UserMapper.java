@@ -1,6 +1,5 @@
 package com.choi.publicScheduleMange.mapper;
 
-import com.choi.publicScheduleMange.model.UserDetail;
 import com.choi.publicScheduleMange.model.UserMgt;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -17,6 +16,4 @@ public interface UserMapper {
     // 시큐리티로그인
     Optional<UserMgt> findByLoginId(String loginId);
 
-    // 로그인처리
-    /*UserDetail loginUserByLoginId(String name);*/
 }

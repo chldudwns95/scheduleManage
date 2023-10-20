@@ -28,7 +28,6 @@
             <button type = "button" id = "loginBtn" class = "w-btn w-btn-indigo">로그인</button>
             <button type = "button" id = "registerBtn" class ="w-btn w-btn-blue">회원가입</button>
         </div>
-            <!--<a href = "/register">회원가입</a>-->
     </form>
 </div>
 
@@ -38,6 +37,23 @@
     let loginPw = document.getElementById('password');
 
     document.getElementById('loginBtn').addEventListener('click', () => {
+        goLogin();
+    });
+
+    document.getElementById('registerBtn').addEventListener('click', () => {
+        window.location.href="/register";
+    });
+
+    document.querySelectorAll('.loginContainer input').forEach(login => {
+        login.addEventListener('keydown', e => {
+            if(e.keyCode===13) {
+                goLogin();
+            }
+
+        })
+    });
+
+    goLogin = () => {
         if(!loginId.value) {
             alert("ID를 입력해주세요.")
             loginId.focus();
@@ -51,10 +67,6 @@
         }
 
         document.getElementById('login').submit();
-    });
-
-    document.getElementById('registerBtn').addEventListener('click', () => {
-       window.location.href="/register";
-    });
+    }
 </script>
 </html>

@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
@@ -13,7 +12,7 @@ import java.util.Collection;
 public class UserMgt implements UserDetails{
 
     private String loginId;
-    private String deptNo;
+    private String companyId;
     private String password;
     private String memberName;
     private String memberPhone;

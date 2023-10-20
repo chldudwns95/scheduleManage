@@ -1,7 +1,6 @@
 package com.choi.publicScheduleMange.service.impl;
 
 import com.choi.publicScheduleMange.mapper.UserMapper;
-import com.choi.publicScheduleMange.model.UserDetail;
 import com.choi.publicScheduleMange.model.UserMgt;
 import com.choi.publicScheduleMange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

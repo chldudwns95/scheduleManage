@@ -8,7 +8,7 @@ public class MainController {
 
     @GetMapping("/, /index")
     public String index() {
-        return "index2";
+        return "index";
     }
 
     @GetMapping("/login")
@@ -24,7 +24,7 @@ public class MainController {
 
     @GetMapping("/logout")
     public String logout() {
-        return "index2";
+        return "index";
     }
 
 }
