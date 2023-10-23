@@ -46,7 +46,14 @@
 
     <delete id="delCompanyList">
         DELETE
-        FROM COMPANY_MGT
-        WHERE COMPANY_ID = #{companyId}
+          FROM COMPANY_MGT
+         WHERE COMPANY_ID = #{companyId}
     </delete>
+
+    <update id ="uptCompanyList">
+        UPDATE COMPANY_MGT
+           SET COMPANY_NM = #{companyNm}
+              ,USE_YN = #{useYn}
+         WHERE COMPANY_ID = #{companyId}
+    </update>
 </mapper>

@@ -1,12 +1,16 @@
 package com.choi.publicScheduleMange.controller;
 
+import com.choi.publicScheduleMange.model.CompanyMgt;
 import com.choi.publicScheduleMange.model.UserMgt;
+import com.choi.publicScheduleMange.service.CompanyService;
 import com.choi.publicScheduleMange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /*@Controller*/
 @RestController
@@ -15,11 +19,13 @@ public class UserApiController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    CompanyService companyService;
+
     @PostMapping("/register")
     public void register(UserMgt user, HttpServletResponse response) throws IOException {
         userService.register(user);
-//        String redirectUri = "http://localhost:9090/login";
-//        String redirectUri = "https://port-0-schedulemanage-jvpb2alns7szyd.sel5.cloudtype.app/login";
+
         String redirectUri = "/login";
         response.sendRedirect(redirectUri);
     }

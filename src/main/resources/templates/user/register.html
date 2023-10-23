@@ -33,14 +33,11 @@
             <label for="memberEmail">이메일</label>
             <input type = "text" name = "memberEmail" id="memberEmail"/>
         </div>
-<!--        <div class="divGap">-->
-            <!--<label for="memberCompany">회사명</label>-->
-            <input type = "text" name = "memberCompany" value ="test" hidden/>
-<!--        </div>-->
+
         <div class="divGap">
             <label for="companyId">회사명</label>
             <select name = "companyId" id="companyId">
-                <option value="테스트회사명">테스트회사명</option>
+                <option th:each="companyList : ${companyList}" th:value="${companyList.companyId}" th:utext="${companyList.companyNm}"></option>
             </select>
         </div>
         <div class="buttonContainer divGap">

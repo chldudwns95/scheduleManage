@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>schdule</title>
     <!-- fullcalendar -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css">
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/button.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
     <body>
         <div class ="indexContainer">
@@ -24,36 +27,40 @@
                             </div>
                             <div class="modal-body">
                                 <form>
-                                    <div>
+                                    <div class ="modal-gap">
                                         <label for="loginId">등록자</label>
                                         <input type="text" name="loginId" id="loginId">
                                     </div>
-                                    <div>
-                                        <label for="deptNo">회사명</label>
-                                        <input type="text" name="deptNo" id="deptNo">
+                                    <div class ="modal-gap">
+                                        <label for="companyId">회사명</label>
+                                        <input type="text" name="companyId" id="companyId">
                                     </div>
-                                    <div>
+                                    <div class ="modal-gap">
                                         <label for="todoContent">할일내용</label>
                                         <input type="text" name="todoContent" id="todoContent">
                                     </div>
-                                    <div>
-                                        <label for="feedId">피드백</label>
-                                        <input type="text" name="feedId" id="feedId">
+                                    <div class ="modal-gap">
+                                        <label for="todoStartDate">시작일자</label>
+                                        <input type="date" name="todoStartDate" id="todoStartDate">
+                                    </div>
+                                    <div class ="modal-gap">
+                                        <label for="todoEndDate">종료일자</label>
+                                        <input type="date" name="todoEndDate" id="todoEndDate">
                                     </div>
                                     <div>
+                                        <input type="text" name="feedId" id="feedId" hidden>
+                                    </div>
+                                    <div class ="modal-gap">
                                         <label for="feedContent">피드백</label>
                                         <input type="text" name="feedContent" id="feedContent">
                                     </div>
-                                    <div>
+                                    <div class ="modal-gap">
                                         <label for="todoCompleteYn">완료여부</label>
-                                        <input type="text" name="todoCompleteYn" id="todoCompleteYn">
+                                        <select name ="todoCompleteYn" id="todoCompleteYn">
+                                            <option value ="N" selected>미완료</option>
+                                            <option value ="Y">완료</option>
+                                        </select>
                                     </div>
-
-    <!--                                title:'디비가져온거',
-                                    start: '2023-10-19',
-                                    end: '2023-10-20',
-                                    feedContent: 'feedContent',
-                                    todoCompleteYn: 'Y',-->
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -66,91 +73,173 @@
             </div>
             <div class ="calendarContainer">
                 <div id="calendar"></div>
-                <div class ="buttonContainer">
+<!--                <div class ="buttonContainer">
                     <button class ="btn btn-primary btn-circl" id ="modalOpenBtn">+</button>
-                </div>
+                </div>-->
             </div>
         </div>
     </body>
 <script>
 
+    <!-- Modal -->
+    const modal = document.getElementById("modal");
+
+    document.getElementById("modalCloseBtn").addEventListener('click', () => modalClose());
+
+    let title = document.getElementById('todoContent');
+    let start = document.getElementById('todoStartDate');
+    let end = document.getElementById('todoEndDate');
+
+    <!-- 커스텀 -->
+    let feedContent = document.getElementById('feedContent');
+    let feedId = document.getElementById('feedId');
+    let todoCompleteYn = document.getElementById('todoCompleteYn');
+    let companyId = document.getElementById('companyId');
+
+
     document.addEventListener('DOMContentLoaded', () => {
-        // 데이터 조회 ajax
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
-                left : 'prev today next',
-                center : 'title',
-                right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                left: 'prev today next myCustomButton mySaveButton',
+                center: 'title',
+                right: 'dayGridMonth timeGridWeek timeGridDay listWeek'
+            },
+            customButtons: {
+                myCustomButton: {
+                    text: "일정 추가하기",
+                    click: function() {
+                        modalOpen();
+                    }
+                },
+                mySaveButton: {
+                    text: "저장하기",
+                    click: function() {
+                        if(confirm("저장하시겠습니까?")) {
+                            saveData();
+                        }
+                    }
+                }
             },
             locale: 'ko',
+            expandRow: true, //화면에 맞게 높이 재설정
             editable: true,
             droppable: true,
             selectable: true,
             selectMirror: true,
-            events: [
-                {
-                    title:'디비가져온거',
-                    start: '2023-10-19',
-                    end: '2023-10-20',
-                    feedContent: 'feedContent',
-                    todoCompleteYn: 'Y',
-                }
-            ],
-            eventClick: function (arg) {
+            select: function (arg) { // 일자클릭시 모달호출
+                modalOpen(arg);
+            },
+            eventClick: function (arg) {    // 이벤트클릭시 모달호출
                 modalOpen();
                 console.log(arg);
             },
-            dateClick: function(info) {
-                console.log(info);
-                modalOpen()
-            }
+
+            eventResize: function (arg) { //이벤트 사이즈 변경시 모달호출
+                modalOpen();
+                console.log(arg);
+            },
+            events : function(info, successCallback, failureCallback) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/todo/findByTodoList', true);
+                xhr.send();
+
+                xhr.onload = () => {
+                    if(xhr.status === 200) {
+                        let data = JSON.parse(xhr.response);
+                        console.log(data);
+                        const eventArray = [];
+                        data.forEach((res) => {
+                           eventArray.push({
+                             title: res.todoContent,
+                             start: res.todoStartDate,
+                             end: res.todoEndDate,
+                           });
+                        });
+                        successCallback(eventArray);
+                    } else {
+                        console.log('fail');
+                    }
+                }
+            },
         });
         calendar.render();
+
+        document.getElementById('modalOkayBtn').addEventListener('click', () => {
+            let eventData = {
+                title: todoContent.value,
+                start : todoStartDate.value,
+                end : todoEndDate.value,
+            }
+            console.log(eventData);
+/*
+            if(eventData.todoContent === "" && eventData.todoContent === null && eventData.todoContent === undefined) {
+                alert("할일내용을 입력해주세요");
+                todoContent.focus();
+                return false;
+            }
+            if(eventData.todoStartDate === "" && eventData.todoStartDate === null && eventData.todoStartDate === undefined) {
+                alert("시작일을 입력해주세요");
+                todoStartDate.focus();
+                return false;
+            }
+
+            if(eventData.todoEndDate === "" && eventData.todoEndDate === null && eventData.todoEndDate === undefined) {
+                alert("종료일을 입력해주세요");
+                todoEndDate.focus();
+                return false;
+            }
+
+            if(eventData.start > eventData.end) {
+                alert("날짜를 확인해주세요");
+                end.focus();
+                return false;
+            }
+*/
+            calendar.addEvent(eventData);
+            calendar.render();
+            modalClose();
+        });
+
+        let saveData = () => {
+            let allEvent = calendar.getEvents();
+            console.log(allEvent);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/todo/insTodoList', true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.send(allEvent);
+
+            xhr.onload = () => {
+                if(xhr.status === 200) {
+                    alert("저장되었습니다");
+                    calendar.render();
+                } else {
+                    alert("실패하였습니다.");
+                }
+            }
+        }
     });
 
-    const modal = document.getElementById("modal");
-    document.getElementById("modalOpenBtn").addEventListener('click', () => modalOpen());
-    document.getElementById("modalCloseBtn").addEventListener('click', () => modalClose());
-
     // 모달창 닫기
-    const modalClose = () => {
+    let modalClose = () => {
         modal.style.display = "none";
         document.body.style.overflow = "auto"; // 스크롤바 보이기
+        initModal();
     }
 
-    const modalOpen = () => {
+    let modalOpen = () => {
         modal.style.display = "block";
         document.body.style.overflow = "hidden"; // 스크롤바 제거
     }
 
-    /*const modalOpen = () => {
-        $("#calendarModal").modal("show");
-        $("#addCalendar").on("click", function () {
-            let todoContent = $("#todoContent").val();
-            let todoInsDate = $("#todoInsDate").val();
-            let todoEndDate = $("#todoEndDate").val();
+    let initModal = () => {
+        title.value ="";
+        start.value = "";
+        end.value ="";
+    }
 
-/!*            console.log(new Date(startDate));
-            console.log(new Date(endDate));
-            //내용 입력 여부 확인
-            if (content == null || content == "") {
-                alert("내용을 입력하세요.");
-            } else if (startDate == "" || endDate == "") {
-                alert("날짜를 입력하세요.");
-            } else if (new Date(startDate) - new Date(endDate) < 0) { // date 타입으로 변경 후 확인
-                alert("종료일이 시작일보다 먼저입니다.");
-            } else { // 정상적인 입력 시*!/
-                let obj = {
-                    "title": content,
-                    "start": startDate,
-                    "end": endDate
-                }//전송할 객체 생성
-                console.log(obj);
-            }*!/
-        })
-     }*/
 </script>
 </html>
 

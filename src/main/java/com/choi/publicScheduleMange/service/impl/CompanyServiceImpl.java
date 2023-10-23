@@ -38,4 +38,9 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyMgt findByCompanyItem(String companyId) {
         return mapper.findByCompanyItem(companyId);
     }
+
+    @Override
+    public void uptCompanyList(CompanyMgt company) {
+        mapper.uptCompanyList(company);
+    }
 }

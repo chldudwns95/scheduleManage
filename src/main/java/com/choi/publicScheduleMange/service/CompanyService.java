@@ -13,4 +13,6 @@ public interface CompanyService {
     void delCompanyList(String companyId);
 
     CompanyMgt findByCompanyItem(String companyId);
+
+    void uptCompanyList(CompanyMgt company);
 }

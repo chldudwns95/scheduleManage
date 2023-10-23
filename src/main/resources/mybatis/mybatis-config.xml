@@ -4,5 +4,6 @@
     <mappers>
         <mapper resource="user.xml"/>
         <mapper resource="company.xml"/>
+        <mapper resource="todo.xml"/>
     </mappers>
 </configuration>

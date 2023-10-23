@@ -29,23 +29,35 @@ public class CompanyController {
         return "redirect:/company";
     }
 
-    @GetMapping("/company/companyUpt/{companyId")
+    @GetMapping("/company/companyUpt/{companyId}")
     public String companyUpt(@PathVariable("companyId") String companyId, Model model) {
         CompanyMgt companyItem = companyService.findByCompanyItem(companyId);
-//        model.addAttribute('')
+        model.addAttribute("companyItem", companyItem);
+
 
         return "company/companyInsUpt";
     }
 
 
     @GetMapping("/company/companyIns")
-    public String companyIns() {
+    public String companyIns(Model model) {
+        CompanyMgt companyItem = new CompanyMgt();
+        companyItem.setCompanyId("");
+        companyItem.setCompanyNm("");
+        companyItem.setUseYn("");
+
+        model.addAttribute("companyItem", companyItem);
         return "company/companyInsUpt";
     }
 
     @PostMapping("/company/companyIns")
     public String companyIns(CompanyMgt company) {
-        companyService.insCompanyList(company);
+        if(company.getCompanyId() != null && !company.getCompanyId().equals("")) {
+            companyService.uptCompanyList(company);
+        } else {
+            companyService.insCompanyList(company);
+        }
+
         return "redirect:/company";
     }
 
